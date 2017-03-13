@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import request from 'request';
-
-const apiKey = '3a3d115c9f51da324ecfb8a1ad1b7017';
+import * as weather from './weather';
 
 class App extends Component {
   constructor() {
@@ -16,10 +14,10 @@ class App extends Component {
   }
 
   getWeather = () => {
-    let url = `http://api.openweathermap.org/data/2.5/weather?zip=48197,us&units=imperial&appid=${apiKey}`;
-    request(url, function (error, response, body) {
-      this.setState({ weatherBody: JSON.parse(body) });
-    }.bind(this));
+    weather.makeCallAsync()
+      .then( (response) => {
+        this.setState({ weatherBody: response });
+      });
   };
 
   render() {
@@ -29,9 +27,9 @@ class App extends Component {
           <h2>Weather Kata</h2>
         </div>
         <input placeholder="zip code" />
-        <button
-          onClick={this.getWeather}
-        >Get Weather</button>
+        <button onClick={this.getWeather}>
+          Get Weather
+        </button>
         <p>{ this.state.weatherBody.name }</p>
       </div>
     );
