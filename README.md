@@ -4,14 +4,33 @@
 This basic react app will make a service call to openweathermap.org when
 the button on the homepage is pressed, it then displays the city from the response data
 
-* setup mocking in jest
 * should read the value in the input field to pass that to the service call (there is a hard coded zip in there now)
 * determine the rules for the kata
 * rules should have instructions for basic jest and react syntax
 
 ## About
-All code lives in `/src/App.js`  
-All tests live in `/src/App.test.js`
+All code lives in `/src/App.js` and `/src/weather.js`  
+All tests live in `/src/__tests__/App.test.js`  
+All mocks live in `/src/__mocks__/`
+
+## Basic info about mocking
+
+We need to create a method that mocks exactly how the app expects the function it is testing to behave. 
+Because javascript is asynchronous, and our api call is asynchronous, our mocked method must also be async.
+ 
+So we mimic the behavior of our `makeCallAsync()` method (except for calling an external service), and we
+ place it in the `__mocks__` directory. Inside of our testing file, we import real method as usual, 
+ but then right below that we add our mocking:
+ 
+ ```javascript
+ import * as weather from '../weather';
+ jest.mock('../weather');
+ ```
+this second line lets jest know to look in `__mocks__` for the method that it should ***actually*** call
+
+now when we get the response back from our async call, it's actually just returning the mocked data we
+previously defined in `__mocks__`
+
 
 ## Up and Running
 ```bash
