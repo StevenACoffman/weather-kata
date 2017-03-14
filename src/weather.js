@@ -7,7 +7,6 @@ export const makeCallAsync = function() {
   let url = `http://api.openweathermap.org/data/2.5/weather?zip=${zip},us&units=imperial&appid=${apiKey}`;
   return new Promise(resolve => {
     request(url, function (error, response, body) {
-      console.log(body);
       resolve( JSON.parse(body) );
     });
   });

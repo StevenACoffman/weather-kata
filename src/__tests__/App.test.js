@@ -10,7 +10,7 @@ it('renders without crashing', () => {
   ReactDOM.render(<App />, div);
 });
 
-it('calls the api method', () =>{
+it('calls the api method', () => {
   weather.makeCallAsync()
     .then(response => {
       expect(response.name).toEqual('Ypsilanti');
