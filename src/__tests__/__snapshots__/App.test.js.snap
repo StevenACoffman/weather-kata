@@ -37,3 +37,43 @@ exports[`test can inject the mock into the App component 2`] = `
   <p />
 </div>
 `;
+
+exports[`test uses the other mock syntax 1`] = `
+<div
+  className="App">
+  <div
+    className="App-header">
+    <h2>
+      Weather Kata
+    </h2>
+  </div>
+  <input
+    onChange={[Function]}
+    placeholder="zip code" />
+  <button
+    onClick={[Function]}>
+    Get Weather
+  </button>
+  <p />
+</div>
+`;
+
+exports[`test uses the other mock syntax 2`] = `
+<div
+  className="App">
+  <div
+    className="App-header">
+    <h2>
+      Weather Kata
+    </h2>
+  </div>
+  <input
+    onChange={[Function]}
+    placeholder="zip code" />
+  <button
+    onClick={[Function]}>
+    Get Weather
+  </button>
+  <p />
+</div>
+`;
