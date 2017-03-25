@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
-
 
 
 class App extends Component {
@@ -14,29 +13,29 @@ class App extends Component {
     };
   }
 
-  getWeather = () => {
+  getWeather() {
     this.weather.makeCallAsync(this.state.input)
-      .then( (response) => {
-        this.setState({ weatherBody: response });
-      });
-  };
+        .then((response) => {
+          this.setState({weatherBody: response});
+        });
+  }
 
-  handleChange = (e) => {
-    this.setState({ input: e.target.value });
-  };
+  handleChange(e) {
+    this.setState({input: e.target.value});
+  }
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Weather Kata</h2>
+        <div className="App">
+          <div className="App-header">
+            <h2>Weather Kata</h2>
+          </div>
+          <input placeholder="zip code" onChange={ this.handleChange }/>
+          <button onClick={this.getWeather}>
+            Get Weather
+          </button>
+          <p id="city-name">{ this.state.weatherBody.name }</p>
         </div>
-        <input placeholder="zip code" onChange={ this.handleChange }/>
-        <button onClick={this.getWeather}>
-          Get Weather
-        </button>
-        <p>{ this.state.weatherBody.name }</p>
-      </div>
     );
   }
 }

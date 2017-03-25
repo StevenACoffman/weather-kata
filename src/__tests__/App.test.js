@@ -1,51 +1,44 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {shallow, render, mount} from 'enzyme';
+
 import App from '../App';
-import renderer from 'react-test-renderer';
 
 
-import * as mockedWeather from '../__mocks__/weather';
+jest.mock("../App.css", () => jest.fn());  //need to mock the css to get jest to ignore it
+
+describe("some simple tests for our App component", () => {
+
+  it('renders without crashing', () => {
+    expect(shallow(<App />).contains(<h2>Weather Kata</h2>)).toBe(true);
+  });
 
 
+  it('uses an inline mock syntax', () => {
+    const makeCallAsync = jest.fn();  //could simply define this as a function, but this lets us spy (see later tests)
+    makeCallAsync.mockReturnValue(Promise.resolve({name: 'Ypsilanti'}));
+
+    const otherWeather = {makeCallAsync};
+
+    expect(shallow(<App weather={otherWeather}/>)).toMatchSnapshot(); //first snapshot for this test
+
+  });
+
+  it('calls for the weather when the button is clicked', () => {
+    const makeCallAsync = jest.fn();
+    makeCallAsync.mockReturnValue(Promise.resolve({name: 'Ypsilanti'}));
+
+    const otherWeather = {makeCallAsync};
+
+    const component = shallow(<App weather={otherWeather}/>);
+    component.find('input').simulate('change', {target: {value: '48197'}});
+    component.find('button').simulate('click');
+    expect(makeCallAsync.mock.calls.length).toEqual(1);
+    expect(makeCallAsync.mock.calls[0][0]).toBe('48197');
 
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+    return makeCallAsync().then(() => {
+      expect(component.find('#city-name').text()).toEqual('Ypsilanti');
+      expect(component).toMatchSnapshot();        //second snapshot for this test
+    })
+  });
 });
-
-it('calls the mocked api method', () => {
-  mockedWeather.makeCallAsync(48197)
-    .then(response => {
-      expect(response.name).toEqual('Ypsilanti');
-    });
-});
-
-it('can inject the mock into the App component', () => {
-  const div = document.createElement('div');
-  const component = renderer.create(<App weather={mockedWeather}/>, div);
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot(); //first snapshot for this test
-
-  tree.children[2].props.onClick(); //manually trigger the button, which is nested
-  tree = component.toJSON();
-  expect(tree).toMatchSnapshot(); //second snapshot for this test
-});
-
-it('uses the other mock syntax', () => {
-  const makeCallAsync = jest.fn();
-  makeCallAsync.mockReturnValue(new Promise((resolve) => resolve({name: 'South Lyon'})));
-
-  const otherWeather = { makeCallAsync };
-
-  const div = document.createElement('div');
-  const component = renderer.create(<App weather={otherWeather}/>, div);
-  let tree = component.toJSON();
-  expect(tree).toMatchSnapshot(); //first snapshot for this test
-
-  tree.children[2].props.onClick(); //manually trigger the button, which is nested
-  tree = component.toJSON();
-  expect(tree).toMatchSnapshot(); //second snapshot for this test
-
-});
-

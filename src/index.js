@@ -5,6 +5,7 @@ import './index.css';
 
 import * as weather from './weather';
 
+
 ReactDOM.render(
   <App weather={weather}/>,
   document.getElementById('root')
