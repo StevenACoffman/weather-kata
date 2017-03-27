@@ -36,9 +36,11 @@ describe("some simple tests for our App component", () => {
     expect(makeCallAsync.mock.calls[0][0]).toBe('48197');
 
 
-    return makeCallAsync().then(() => {
-      expect(component.find('#city-name').text()).toEqual('Ypsilanti');
-      expect(component).toMatchSnapshot();        //second snapshot for this test
-    })
+    return Promise.resolve().then(() => {
+        expect(component.update()).toMatchSnapshot();        //second snapshot for this test
+        expect(component.find('#city-name').text()).toEqual('Ypsilanti');
+        return undefined;
+      }
+    );
   });
 });
